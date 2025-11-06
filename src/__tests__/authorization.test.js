@@ -80,7 +80,7 @@ describe("Authorization Tests", () => {
 
       expect(res.statusCode).toBe(403)
       expect(res.body.success).toBe(false)
-      expect(res.body.message).toContain("not authorized")
+      expect(res.body.message).toContain("Not authorized")
     })
 
     test("admin should be able to delete medical records", async () => {
