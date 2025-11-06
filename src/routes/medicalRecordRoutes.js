@@ -22,6 +22,6 @@ router
   .route("/:id")
   .get(idValidation, validate, getMedicalRecord)
   .put(idValidation, validate, updateMedicalRecord)
-  .delete(idValidation, validate, authorize("admin"), deleteMedicalRecord)
+  .delete(idValidation, validate, deleteMedicalRecord)
 
 export default router

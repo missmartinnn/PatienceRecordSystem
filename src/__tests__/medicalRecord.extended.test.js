@@ -4,6 +4,7 @@ import app from "../app.js"
 
 describe("Extended Medical Record Tests", () => {
   let token
+  let doctorId
   let patientId
   let recordId
 
@@ -18,6 +19,10 @@ describe("Extended Medical Record Tests", () => {
       phone: "+1111111111",
     })
     token = doctorRes.body.token
+
+    // Get doctor ID
+    const meRes = await request(app).get("/api/auth/me").set("Authorization", `Bearer ${token}`)
+    doctorId = meRes.body.data._id
 
     // Create patient
     const patientRes = await request(app)
@@ -243,7 +248,7 @@ describe("Extended Medical Record Tests", () => {
     })
 
     test("should filter records by doctor", async () => {
-      const res = await request(app).get(`/api/medical-records?doctor=${token}`).set("Authorization", `Bearer ${token}`)
+      const res = await request(app).get(`/api/medical-records?doctor=${doctorId}`).set("Authorization", `Bearer ${token}`)
 
       expect(res.statusCode).toBe(200)
       expect(res.body.success).toBe(true)

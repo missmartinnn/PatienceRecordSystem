@@ -62,10 +62,21 @@ describe("Authorization Tests", () => {
   })
 
   describe("Role-based Access Control", () => {
-    test("regular doctor should not delete medical records", async () => {
+    test("regular doctor should not delete other doctors medical records", async () => {
+      // Create another doctor
+      const otherDoctorRes = await request(app).post("/api/auth/register").send({
+        name: "Dr. Other",
+        email: "other@hospital.com",
+        password: "password123",
+        specialization: "Other",
+        licenseNumber: "LIC333",
+        phone: "+5555555555",
+      })
+      const otherDoctorToken = otherDoctorRes.body.token
+
       const res = await request(app)
         .delete(`/api/medical-records/${recordId}`)
-        .set("Authorization", `Bearer ${doctorToken}`)
+        .set("Authorization", `Bearer ${otherDoctorToken}`)
 
       expect(res.statusCode).toBe(403)
       expect(res.body.success).toBe(false)

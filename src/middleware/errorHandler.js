@@ -1,6 +1,6 @@
 export const errorHandler = (err, req, res, next) => {
   let error = { ...err }
-  error.message = err.message
+  error.message = err.message || ""
 
   console.error("Error:", err)
 
@@ -27,6 +27,6 @@ export const errorHandler = (err, req, res, next) => {
 
   res.status(error.statusCode || 500).json({
     success: false,
-    message: error.message || "Server Error",
+    message: error.message,
   })
 }

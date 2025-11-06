@@ -35,7 +35,7 @@ export const patientValidation = [
   body("lastName").trim().notEmpty().withMessage("Last name is required"),
   body("dateOfBirth").isISO8601().withMessage("Valid date of birth is required"),
   body("gender").isIn(["male", "female", "other"]).withMessage("Gender must be male, female, or other"),
-  body("phone").trim().notEmpty().withMessage("Phone number is required"),
+  body("phone").trim().notEmpty().withMessage("Phone number is required").matches(/^\+?[1-9]\d{1,14}$/).withMessage("Please provide a valid phone number"),
   body("emergencyContact.name").trim().notEmpty().withMessage("Emergency contact name is required"),
   body("emergencyContact.phone").trim().notEmpty().withMessage("Emergency contact phone is required"),
 ]
