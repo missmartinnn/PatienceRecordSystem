@@ -29,6 +29,7 @@ describe("Extended Medical Record Tests", () => {
         dateOfBirth: "1990-05-15",
         gender: "female",
         phone: "+1234567890",
+        bloodGroup: "O+",
         emergencyContact: {
           name: "John Doe",
           phone: "+0987654321",

@@ -47,6 +47,9 @@ export const getMedicalRecords = async (req, res, next) => {
 
     if (doctor) {
       query.doctor = doctor
+    } else {
+      // Default to current doctor's records if no doctor specified
+      query.doctor = req.user.id
     }
 
     const medicalRecords = await MedicalRecord.find(query)
@@ -137,7 +140,7 @@ export const updateMedicalRecord = async (req, res, next) => {
 
 // @desc    Delete medical record
 // @route   DELETE /api/medical-records/:id
-// @access  Private (Admin only)
+// @access  Private
 export const deleteMedicalRecord = async (req, res, next) => {
   try {
     const medicalRecord = await MedicalRecord.findById(req.params.id)
@@ -146,6 +149,14 @@ export const deleteMedicalRecord = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: "Medical record not found",
+      })
+    }
+
+    // Only the doctor who created the record or admin can delete it
+    if (medicalRecord.doctor.toString() !== req.user.id && req.user.role !== "admin") {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to delete this medical record",
       })
     }
 
